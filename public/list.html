@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt" ng-app="list">
+        <head>
+                <title>Home Info System</title>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+		<!-- Custom CSS -->
+                <link rel="stylesheet" href="css/custom.css">
+		
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		
+		<!-- Angular.js -->
+                <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+		<script src="js/index.js"></script>
+                <script src="js/list.js"></script>
+        </head>
+        <body ng-controller="ListObjectsCtrl">
+		<nav-bar></nav-bar>
+		<div class="container">
+			<center ng-hide="objects[0]"><h1>Loading, please wait...</h1></center>
+			<table class="table table-striped" ng-show="objects[0]">
+				<thead>
+					<tr>
+						<th>Place</th>
+						<th>Type</th>
+						<th>Subtype</th>
+						<th>Brand</th>
+						<th>Model</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="object in objects">
+						<td class="vert-align">{{getFromArray(object, 'LOC')}}</td>
+						<td class="vert-align">{{getFromArray(object, 'TIP')}}</td>
+						<td class="vert-align">{{getFromArray(object, 'STP')}}</td>
+						<td class="vert-align">{{getFromArray(object, 'MAR')}}</td>
+						<td class="vert-align">{{getExtraInfo(object, 'Modelo')}}</td>
+						<td class="vert-align"><button class="btn btn-info" data-toggle="modal" data-target="#modal-{{object.ID}}">More</button> <a class="btn btn-warning" href="{{toEdit(getCompleteID(object))}}">Edit</a>
+					</tr>
+				</tbody>
+			</table>
+
+			<div ng-repeat="object in objects" class="modal fade" id="modal-{{object.ID}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myModalLabel">{{getFromArray(object, 'MAR')}} - {{getExtraInfo(object, 'Modelo')}}</h4>
+						</div>
+						<div class="modal-body">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Property</th>
+										<th>Value</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>Place</td>
+										<td>{{getFromArray(object, 'LOC')}}</td>
+									</tr>
+									<tr>
+                                                                                <td>Type</td>
+                                                                                <td>{{getFromArray(object, 'TIP')}}</td>
+                                                                        </tr>
+									<tr>
+                                                                                <td>Subtype</td>
+                                                                                <td>{{getFromArray(object, 'STP')}}</td>
+                                                                        </tr>
+									<tr ng-show="getExtraInfo(object, 'Preco')">
+                                                                                <td>Original price</td>
+                                                                                <td>{{getExtraInfo(object, 'Preco')}} €</td>
+                                                                        </tr>
+									<tr ng-show="getExtraInfo(object, 'Compra')">
+										<td>Date of purchase</td>
+										<td>{{getExtraInfo(object, 'Compra')}}</td>
+									</tr>
+									<tr ng-show="getExtraInfo(object, 'Loja')">
+										<td>Place of purchase</td>
+										<td>{{getExtraInfo(object, 'Loja')}}</td>
+									<tr>
+								</tbody>
+							</table>
+							<div ng-show="getExtraInfo(object, 'Notas')">
+								<h3>Notes</h3>
+								{{getExtraInfo(object, 'Notas')}}
+							</div>
+							<div>
+								<img class="barcode-img center-block" ng-src="barcodes/{{object.ID}}.png" />
+								<center><span class="barcode-text">{{object.LOC}} {{object.TIP}} {{object.STP}} {{object.MAR}} {{object.ID}}</span></center>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+        </body>
+</html>

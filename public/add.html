@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="add">
+        <head>
+                <title>Home Info System</title>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+		<!-- Custom CSS -->
+                <link rel="stylesheet" href="css/custom.css">
+		
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		
+		<!-- Angular.js -->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-scroll/0.7.3/angular-scroll.min.js"></script>
+		<script src="js/index.js"></script>
+		<script src="js/add.js"></script>
+        </head>
+        <body>
+		<nav-bar></nav-bar>
+		<div class="container">
+			<ul class="nav nav-tabs" ng-controller="TabCtrl">
+				<li role="presentation" class="{{objectClass}}"><a href="#" ng-click="selectDiv('object')">Object</a></li>
+				<li role="presentation" class="{{placeClass}}"><a href="#" ng-click="selectDiv('place')">Place</a></li>
+				<li role="presentation" class="{{typeClass}}"><a href="#" ng-click="selectDiv('type')">Type</a></li>
+				<li role="presentation" class="{{subtypeClass}}"><a href="#" ng-click="selectDiv('subtype')">Subtype</a></li>
+				<li role="presentation" class="{{brandClass}}"><a href="#" ng-click="selectDiv('brand')">Brand</a></li>
+			</ul>
+			<div ng-controller="MessageCtrl">
+				<div ng:repeat="message in messages" class="alert {{message.type}}">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close" ng-click="closeMessage(message.id)">&times;</a>
+					{{message.text}}
+				</div>
+			</div>
+			<div class="add-object" ng-show="objectClass != ''">
+				<form ng-controller="AddObjectCtrl">
+					<div class="form-group">
+						<label for="local">Place</label>
+						<select class="form-control" id="local" ng-model="selectedPlace">
+							<option ng:repeat="place in places | orderBy:'Nome'" value="{{place.ID}}">{{place.Nome}}</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="tipo">Type</label>
+						<select class="form-control" id="tipo" ng-model="selectedType" ng-change="updateSubtype()">
+							<option ng:repeat="type in types | orderBy:'Nome'" value="{{type.ID}}">{{type.Nome}}</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="subtipo">Subtype</label>
+						<select class="form-control" id="subtipo" ng-model="selectedSubtype">
+							<option ng:repeat="subtype in subtypes | orderBy:'Nome'" value="{{subtype.ID}}">{{subtype.Nome}}</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="marca">Brand</label>
+						<select class="form-control" id="marca" ng-model="selectedBrand">
+							<option ng:repeat="brand in brands | orderBy:'Nome'" value="{{brand.ID}}">{{brand.Nome}}</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="modelo">Model</label>
+						<input type="text" class="form-control" id="modelo" ng-model="extra.Modelo">
+					</div>
+					<div class="form-group">
+                                        	<label for=preco">Original price</label>
+                                        	<div class="input-group">
+                                                	<input type="text" class="form-control" id="preco" ng-model="extra.Preco">
+                                                	<div class="input-group-addon">€</div>
+                                        	</div>
+                                	</div>
+					<div class="form-group">
+                                                <label for="compra">Date of purchase</label>
+                                                <input type="text" class="form-control" id="compra" ng-model="extra.Compra">
+                                        </div>
+					<div class="form-group">
+                                                <label for="loja">Place of purchase</label>
+                                                <input type="text" class="form-control" id="loja" ng-model="extra.Loja">
+                                        </div>
+					<div class="form-group">
+						<label for="notas">Notes</label>
+						<textarea class="form-control" rows="5" id="notas" ng-model="extra.Notas"></textarea>
+					</div>
+					<button type="reset" class="btn btn-info" ng-click="resetForm()">Reset</button>
+					<button type="submit" class="btn btn-success" ng-click="recordObject()">Save</button>
+				</form>
+			</div>
+			<div class="add-place" ng-show="placeClass != ''">
+				<form ng-controller="AddPlaceCtrl">
+					<div class="form-group">
+						<label for="place">Place</label>
+						<input type="text" class="form-control" id="place" ng-model="newPlace">
+					</div>
+					<button type="reset" class="btn btn-info" ng-click="resetForm()">Reset</button>
+					<button type="submit" class="btn btn-success" ng-click="recordPlace()">Save</button>
+				</form>
+			</div>
+			<div class="add-type" ng-show="typeClass != ''">
+				<form ng-controller="AddTypeCtrl">
+                                        <div class="form-group">
+                                                <label for="type">Type</label>
+                                                <input type="text" class="form-control" id="type" ng-model="newType">
+                                        </div>
+					<button type="reset" class="btn btn-info" ng-click="resetForm()">Reset</button>
+                                        <button type="submit" class="btn btn-success" ng-click="recordType()">Save</button>
+                                </form>
+			</div>
+			<div class="add-subtype" ng-show="subtypeClass != ''">
+				<form ng-controller="AddSubtypeCtrl">
+					<div class="form-group">
+                                                <label for="etype">Type</label>
+                                                <select class="form-control" id="etype" ng-model="selectedType">
+                                                        <option ng:repeat="type in types | orderBy:'Nome'" value="{{type.ID}}">{{type.Nome}}</option>
+                                                </select>
+                                        </div>
+                                        <div class="form-group">
+                                                <label for="subtype">Subtype</label>
+                                                <input type="text" class="form-control" id="subtype" ng-model="newSubtype">
+                                        </div>
+					<button type="reset" class="btn btn-info" ng-click="resetForm()">Reset</button>
+                                        <button type="submit" class="btn btn-success" ng-click="recordSubtype()">Save</button>
+                                </form>
+			</div>
+			<div class="add-brand" ng-show="brandClass != ''">
+				<form ng-controller="AddBrandCtrl">
+                                        <div class="form-group">
+                                                <label for="brand">Brand</label>
+                                                <input type="text" class="form-control" id="brand" ng-model="newBrand">
+                                        </div>
+					<button type="reset" class="btn btn-info" ng-click="resetForm()">Reset</button>
+                                        <button type="submit" class="btn btn-success" ng-click="recordBrand()">Save</button>
+                                </form>
+			</div>
+		</div>
+        </body>
+</html>

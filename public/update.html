@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt" ng-app="update">
+        <head>
+                <title>Home Info System</title>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+		<!-- Custom CSS -->
+                <link rel="stylesheet" href="css/custom.css">
+		
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+		<!-- Angular.js -->
+                <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+                <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-scroll/0.7.3/angular-scroll.min.js"></script>
+		<script src="js/index.js"></script>
+                <script src="js/update.js"></script>
+        </head>
+        <body>
+		<nav-bar></nav-bar>
+		<div class="container">
+			<form ng-controller="GetObjectCtrl">
+				<div class="form-group">
+					<label for="object-code">Object Code</label>
+					<input type="text" class="form-control" id="object-code" ng-model="objectID">
+				</div>
+				<button type="submit" class="btn btn-primary" ng-click="getObject()">Get Object</button>
+				<button class="btn btn-info" ng-click="resetGetObject()">Reset</button>
+			</form>
+		</div>
+		<hr ng-show="selectedObject">
+		<div class="container" ng-show="selectedObject">
+			<div ng-controller="MessageCtrl">
+                        	<div ng:repeat="message in messages" class="alert {{message.type}}">
+                                	<a href="#" class="close" data-dismiss="alert" aria-label="close" ng-click="closeMessage(message.id)">&times;</a>
+                                	{{message.text}}
+                        	</div>
+                	</div>
+			<form ng-controller="UpdateObjectCtrl">
+				<div class="form-group">
+					<label for="local">Place</label>
+					<select class="form-control" id="local" ng-model="selectedObject.LOC" ng-options="place.ID as place.Nome for place in places | orderBy:'Nome'">
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="tipo">Type</label>
+					<select class="form-control" id="tipo" ng-model="selectedObject.TIP" ng-options="type.ID as type.Nome for type in types | orderBy:'Nome'" ng-change="updateSubtype()">
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="subtipo">Subtype</label>
+					<select class="form-control" id="subtipo" ng-model="selectedObject.STP" ng-options="subtype.ID as subtype.Nome for subtype in subtypes | orderBy:'Nome'">
+					</select>
+				</div>
+				<div class="form-group">
+                                        <label for="marca">Brand</label>
+                                        <select class="form-control" id="marca" ng-model="selectedObject.MAR" ng-options="brand.ID as brand.Nome for brand in brands | orderBy:'Nome'">
+                                        </select>
+                                </div>
+
+				<div class="form-group">
+					<label for="modelo">Model</label>
+					<input type="text" class="form-control" id="modelo" ng-model="selectedObject.INF.Modelo">
+				</div>
+				<div class="form-group">
+					<label for=preco">Original price</label>
+					<div class="input-group">
+						<input type="text" class="form-control" id="preco" ng-model="selectedObject.INF.Preco">
+						<div class="input-group-addon">€</div>
+					</div>
+				</div>
+				<div class="form-group">
+                                        <label for="compra">Date of purchase</label>
+                                        <input type="text" class="form-control" id="compra" ng-model="selectedObject.INF.Compra">
+                                </div>
+                                <div class="form-group">
+                                        <label for="loja">Place of purchase</label>
+                                        <input type="text" class="form-control" id="loja" ng-model="selectedObject.INF.Loja">
+                                </div>
+				<div class="form-group">
+                                        <label for="notas">Notes</label>
+                                        <textarea class="form-control" rows="5" id="notas" ng-model="selectedObject.INF.Notas"></textarea>
+                                </div>
+				<button class="btn btn-info" ng-click="resetObject()">Reset</button>
+				<button type="submit" class="btn btn-warning" ng-click="updateObject()">Update</button>
+			</form>
+		</div>
+        </body>
+</html>

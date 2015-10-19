@@ -1,0 +1,21 @@
+body {
+	padding-top: 70px;
+	padding-bottom: 20px;
+}
+
+.nav-tabs {
+	margin-bottom: 20px;
+}
+
+.barcode-img {
+	margin-top: 20px;
+}
+
+.barcode-text {
+	font-family: "Courier New", Courier, monospace;
+	font-size: 18px !important;
+}
+
+.table tbody>tr>td.vert-align{
+    vertical-align: middle;
+}
