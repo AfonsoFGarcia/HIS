@@ -1,17 +1,22 @@
 {
-	"name" : "Home Info System",
-	"version" : "1.0.0",
-	"description" : "A web based information system for keeping track of your possessions",
-	"author" : "Afonso F. Garcia <me@afonsogarcia.pt>",
-	"dependencies" : {
-		"express" : "~4.13.3",
-		"barcode" : "~0.1.0",
-		"body-parser" : "~1.14.1",
-		"sql.js" : "~0.2.21"
-	},
-	"repository" : {
-		"type" : "git",
-		"url" : "https://github.com/AfonsoFGarcia/HIS"
-	},
-	"licence" : "MIT"
+  "name": "home-info-system",
+  "version": "1.0.1",
+  "description": "A web based information system for keeping track of your possessions",
+  "main": "app.js",
+  "dependencies": {
+    "barcode": "^0.1.0",
+    "body-parser": "^1.14.1",
+    "express": "^4.13.3",
+    "sql.js": "^0.2.21"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AfonsoFGarcia/HIS.git"
+  },
+  "author": "Afonso F. Garcia <me@afonsogarcia.pt>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AfonsoFGarcia/HIS/issues"
+  },
+  "homepage": "https://github.com/AfonsoFGarcia/HIS#readme"
 }
