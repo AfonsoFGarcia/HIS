@@ -87,6 +87,10 @@
 										<td>Place of purchase</td>
 										<td>{{getExtraInfo(object, 'Loja')}}</td>
 									<tr>
+									<tr ng-show="getExtraInfo(object, 'SN')">
+                                                                                <td>Serial number</td>
+                                                                                <td>{{getExtraInfo(object, 'SN')}}</td>
+                                                                        <tr>
 								</tbody>
 							</table>
 							<div ng-show="getExtraInfo(object, 'Notas')">
