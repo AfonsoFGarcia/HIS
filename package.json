@@ -1,6 +1,6 @@
 {
   "name": "home-info-system",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A web based information system for keeping track of your possessions",
   "main": "app.js",
   "dependencies": {
