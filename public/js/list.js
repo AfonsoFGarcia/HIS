@@ -1,4 +1,4 @@
-var module = angular.module('list', ['index']);
+var module = angular.module('list', ['index', 'angularUtils.directives.dirPagination']);
 
 module.controller('ListObjectsCtrl', function($scope, $http, $location) {
 	$scope.objects = [];

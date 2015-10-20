@@ -14,6 +14,7 @@
 		
 		<!-- Angular.js -->
                 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+		<script src="https://cdn.rawgit.com/michaelbromley/angularUtils/master/src/directives/pagination/dirPagination.js"></script>
 		<script src="js/index.js"></script>
                 <script src="js/list.js"></script>
         </head>
@@ -33,17 +34,19 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="object in objects">
-						<td class="vert-align">{{getFromArray(object, 'LOC')}}</td>
-						<td class="vert-align">{{getFromArray(object, 'TIP')}}</td>
-						<td class="vert-align">{{getFromArray(object, 'STP')}}</td>
-						<td class="vert-align">{{getFromArray(object, 'MAR')}}</td>
-						<td class="vert-align">{{getExtraInfo(object, 'Modelo')}}</td>
-						<td class="vert-align"><button class="btn btn-info" data-toggle="modal" data-target="#modal-{{object.ID}}">More</button> <a class="btn btn-warning" href="{{toEdit(getCompleteID(object))}}">Edit</a>
+					<tr dir-paginate="object in objects | itemsPerPage: 10">
+						<td class="vert-align col-md-2">{{getFromArray(object, 'LOC')}}</td>
+						<td class="vert-align col-md-2">{{getFromArray(object, 'TIP')}}</td>
+						<td class="vert-align col-md-2">{{getFromArray(object, 'STP')}}</td>
+						<td class="vert-align col-md-2">{{getFromArray(object, 'MAR')}}</td>
+						<td class="vert-align col-md-2">{{getExtraInfo(object, 'Modelo')}}</td>
+						<td class="vert-align col-md-2"><button class="btn btn-info" data-toggle="modal" data-target="#modal-{{object.ID}}">More</button> <a class="btn btn-warning" href="{{toEdit(getCompleteID(object))}}">Edit</a>
 					</tr>
 				</tbody>
 			</table>
-
+			<div class="text-center">
+				<dir-pagination-controls template-url="common/pagination.html"></dir-pagination-controls>
+			</div>
 			<div ng-repeat="object in objects" class="modal fade" id="modal-{{object.ID}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
