@@ -15,6 +15,8 @@
 		<!-- Angular.js -->
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-scroll/0.7.3/angular-scroll.min.js"></script>
+		<script src="https://cdn.rawgit.com/danialfarid/ng-file-upload/master/dist/ng-file-upload-shim.min.js"></script>
+                <script src="https://cdn.rawgit.com/danialfarid/ng-file-upload/master/dist/ng-file-upload.min.js"></script>
 		<script src="js/index.js"></script>
 		<script src="js/add.js"></script>
         </head>
@@ -83,6 +85,14 @@
 						<label for="sn">Serial number</label>
 						<input type="text" class="form-control" id="sn" ng-model="extra.SN">
 					</div>
+					<div class="form-group">
+                                        	<label for=pic">Picture</label>
+                                        	<input type="file" ngf-select="fileSelected($files, 'Picture')" accept="'image/*'">
+                                	</div>
+                                	<div class="form-group">
+                                        	<label for="fat">Invoice</label>
+                                        	<input type="file" ngf-select="fileSelected($files, 'Invoice')" accept="application/pdf">
+                                	</div>
 					<div class="form-group">
 						<label for="notas">Notes</label>
 						<textarea class="form-control" rows="5" id="notas" ng-model="extra.Notas"></textarea>

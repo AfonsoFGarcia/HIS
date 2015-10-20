@@ -4,6 +4,7 @@ var fs = require('fs');
 var SQL = require('sql.js');
 var barcode = require('barcode');
 var path = require('path');
+var multer = require('multer');
 
 if(!process.argv[2]) {
   console.log("Usage: node app.js [database]");
@@ -18,6 +19,19 @@ var db = new SQL.Database(filebuffer);
 console.log('Read database');
 
 var app = express();
+
+var storage = multer.diskStorage({
+	destination : function(req, file, cb) {
+		cb(null, 'public/uploads');
+	},
+	filename : function(req, file, cb) {
+		cb(null, req.params.id + "_" + Date.now() + "_" + file.originalname);
+	}
+});
+
+var upload = multer({
+	storage : storage
+});
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -203,6 +217,26 @@ app.get('/api/subtipos', function (req, res) {
     });
   }
   res.json(subtipos);
+});
+
+app.post('/upload/imagem/:id', upload.single('file'), function (req, res) {
+  var id = req.params.id;
+  var result = JSON.parse(db.exec("SELECT DSC FROM ART WHERE ID='"+id+"'")[0].values[0][0]);
+  result.Imagem = 'uploads/' + req.file.filename;
+  var store = JSON.stringify(result);
+  db.exec("UPDATE ART SET DSC='" + store + "' WHERE ID='" + id + "'");
+  fs.writeFileSync(database_file, new Buffer(db.export()));
+  res.json(result.Imagem);
+});
+
+app.post('/upload/fatura/:id', upload.single('file'), function (req, res) {
+  var id = req.params.id;
+  var result = JSON.parse(db.exec("SELECT DSC FROM ART WHERE ID='"+id+"'")[0].values[0][0]);
+  result.Fatura = 'uploads/' + req.file.filename;
+  var store = JSON.stringify(result);
+  db.exec("UPDATE ART SET DSC='" + store + "' WHERE ID='" + id + "'");
+  fs.writeFileSync(database_file, new Buffer(db.export()));
+  res.json(result.Imagem);
 });
 
 var server = app.listen(80);

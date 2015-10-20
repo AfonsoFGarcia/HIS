@@ -55,6 +55,7 @@
 							<h4 class="modal-title" id="myModalLabel">{{getFromArray(object, 'MAR')}} - {{getExtraInfo(object, 'Modelo')}}</h4>
 						</div>
 						<div class="modal-body">
+							<img ng-src="{{getExtraInfo(object, 'Imagem')}}" ng-show="getExtraInfo(object, 'Imagem')" class="list-image">
 							<table class="table table-striped">
 								<thead>
 									<tr>
@@ -91,6 +92,10 @@
                                                                                 <td>Serial number</td>
                                                                                 <td>{{getExtraInfo(object, 'SN')}}</td>
                                                                         <tr>
+									<tr ng-show="getExtraInfo(object, 'Fatura')">
+										<td>Invoice</td>
+										<td><a href="{{getExtraInfo(object, 'Fatura')}}" target="_blank">Download</a></td>
+									</tr>
 								</tbody>
 							</table>
 							<div ng-show="getExtraInfo(object, 'Notas')">

@@ -1,4 +1,4 @@
-var module = angular.module('update', ['index', 'duScroll']);
+var module = angular.module('update', ['index', 'duScroll', 'ngFileUpload']);
 
 module.controller('GetObjectCtrl', function($scope, $rootScope, $http, $location) {
 	$rootScope.selectedObject = null;
@@ -43,7 +43,7 @@ module.controller('GetObjectCtrl', function($scope, $rootScope, $http, $location
 	};
 });
 
-module.controller('UpdateObjectCtrl', function($scope, $rootScope, $http, $document) {
+module.controller('UpdateObjectCtrl', function($scope, $rootScope, $http, $document, Upload) {
 	$scope.places = [];
 
         $http.get('api/locais').success(function (result) {
@@ -69,6 +69,13 @@ module.controller('UpdateObjectCtrl', function($scope, $rootScope, $http, $docum
         $http.get('api/marcas').success(function (result) {
                 $scope.brands = result;
         });
+	
+	$scope.fileSelected = function(files, type) {
+		if(files && files.length) {
+			$scope[type] = files[0];
+			console.log($scope[type]);
+		}
+	};
 
 	$scope.updateObject = function() {
 		var objectToStore = {
@@ -80,13 +87,36 @@ module.controller('UpdateObjectCtrl', function($scope, $rootScope, $http, $docum
 		};
 		
 		$http.put('api/objecto/'+$rootScope.selectedObject.ID, objectToStore).success(function (result) {
+			var uploadFunc = function(path, type) {
+				Upload.upload({
+                                        url  : '/upload/' + path + '/' + $rootScope.selectedObject.ID,
+                                        data : { file : $scope[type] }
+                                }).then(function(resp) {
+                                }, function(resp) {
+                                        $rootScope.messages.push({
+                                                'text' : type + ' was not uploaded',
+                                                'type' : 'alert-danger',
+                                                'id'   : $rootScope.messageID++
+                                        });
+                                        $rootScope.backupObject = angular.copy($rootScope.selectedObject);
+                                        $document.scrollTopAnimated(0, 500);
+                                });
+                                $scope[type] = null;
+			};
+			
+			if($scope.Picture) {
+				uploadFunc('imagem', 'Picture');
+			}
+			if($scope.Invoice) {
+				uploadFunc('fatura', 'Invoice');
+			}
 			$rootScope.messages.push({
                                 'text' : 'Object updated with success',
                                 'type' : 'alert-success',
                                 'id'   : $rootScope.messageID++
                         });
-			$rootScope.backupObject = angular.copy($rootScope.selectedObject);
-			$document.scrollTopAnimated(0, 500);
+                        $rootScope.backupObject = angular.copy($rootScope.selectedObject);
+                        $document.scrollTopAnimated(0, 500);
 		});
 	};
 

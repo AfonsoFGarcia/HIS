@@ -19,3 +19,13 @@ body {
 .table tbody>tr>td.vert-align{
     vertical-align: middle;
 }
+
+.update-image {
+	max-width: 300px;
+	margin-bottom: 5px;
+}
+
+.list-image {
+	max-width: 100%;
+	margin-bottom: 15px;
+}

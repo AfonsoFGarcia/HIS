@@ -7,6 +7,7 @@
     "barcode": "^0.1.0",
     "body-parser": "^1.14.1",
     "express": "^4.13.3",
+    "multer": "^1.0.6",
     "sql.js": "^0.2.21"
   },
   "repository": {

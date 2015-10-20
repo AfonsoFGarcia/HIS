@@ -31,3 +31,6 @@ node_modules
 
 # Barcodes
 public/barcodes/*
+
+# Uploaded Files
+public/uploads/*
