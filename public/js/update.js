@@ -87,34 +87,39 @@ module.controller('UpdateObjectCtrl', function($scope, $rootScope, $http, $docum
 		};
 		
 		$http.put('api/objecto/'+$rootScope.selectedObject.ID, objectToStore).success(function (result) {
+			var success = true;
+
 			var uploadFunc = function(path, type) {
 				Upload.upload({
                                         url  : '/upload/' + path + '/' + $rootScope.selectedObject.ID,
                                         data : { file : $scope[type] }
                                 }).then(function(resp) {
+					return true;
                                 }, function(resp) {
-                                        $rootScope.messages.push({
-                                                'text' : type + ' was not uploaded',
-                                                'type' : 'alert-danger',
-                                                'id'   : $rootScope.messageID++
-                                        });
-                                        $rootScope.backupObject = angular.copy($rootScope.selectedObject);
-                                        $document.scrollTopAnimated(0, 500);
+´					return false;
                                 });
                                 $scope[type] = null;
 			};
 			
 			if($scope.Picture) {
-				uploadFunc('imagem', 'Picture');
+				success = success && uploadFunc('imagem', 'Picture');
 			}
 			if($scope.Invoice) {
-				uploadFunc('fatura', 'Invoice');
+				success = success && uploadFunc('fatura', 'Invoice');
 			}
-			$rootScope.messages.push({
-                                'text' : 'Object updated with success',
-                                'type' : 'alert-success',
-                                'id'   : $rootScope.messageID++
-                        });
+			if(success) {
+				$rootScope.messages.push({
+                                	'text' : 'Object updated with success',
+                                	'type' : 'alert-success',
+                                	'id'   : $rootScope.messageID++
+                        	});
+			} else {
+				$rootScope.messages.push({
+                                        'text' : 'Object updated with success but there were errors uploading the files',
+                                        'type' : 'alert-warning',
+                                        'id'   : $rootScope.messageID++
+                                });
+			}
                         $rootScope.backupObject = angular.copy($rootScope.selectedObject);
                         $document.scrollTopAnimated(0, 500);
 		});

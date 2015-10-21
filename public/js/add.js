@@ -98,34 +98,39 @@ module.controller('AddObjectCtrl', function($rootScope, $scope, $http, $timeout,
 			'MAR' : parseInt($scope.selectedBrand),
 			'INF' : $scope.extra
 		}).success(function (result) {
+			var success = true;
+			
 			var uploadFunc = function(path, type, id) {
                                 Upload.upload({
                                         url  : '/upload/' + path + '/' + id,
                                         data : { file : $scope[type] }
                                 }).then(function(resp) {
-                                }, function(resp) {
-                                        $rootScope.messages.push({
-                                                'text' : type + ' was not uploaded',
-                                                'type' : 'alert-danger',
-                                                'id'   : $rootScope.messageID++
-                                        });
-                                        $rootScope.backupObject = angular.copy($rootScope.selectedObject);
-                                        $document.scrollTopAnimated(0, 500);
+                        		return true;
+			        }, function(resp) {
+					return false;
                                 });
                                 $scope[type] = null;
                         };
 
                         if($scope.Picture) {
-                                uploadFunc('imagem', 'Picture', result);
+                                success = sucess && uploadFunc('imagem', 'Picture', result);
                         }
                         if($scope.Invoice) {
-                                uploadFunc('fatura', 'Invoice', result);
+                                success = success && uploadFunc('fatura', 'Invoice', result);
                         }
-			$rootScope.messages.push({
-                                'text' : 'Object added with success',
-                                'type' : 'alert-success',
-				'id'   : $rootScope.messageID++
-                        });
+			if(success {
+				$rootScope.messages.push({
+                                	'text' : 'Object added with success',
+                                	'type' : 'alert-success',
+					'id'   : $rootScope.messageID++
+                        	});
+			} else {
+				$rootScope.messages.push({
+                                        'text' : 'Object added with success but there were errors uploading the files',
+                                        'type' : 'alert-warning',
+                                        'id'   : $rootScope.messageID++
+                                });
+			}
 			$document.scrollTopAnimated(0, 500);
 			$scope.resetForm();
 		});
