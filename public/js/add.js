@@ -118,7 +118,7 @@ module.controller('AddObjectCtrl', function($rootScope, $scope, $http, $timeout,
                         if($scope.Invoice) {
                                 success = success && uploadFunc('fatura', 'Invoice', result);
                         }
-			if(success {
+			if(success) {
 				$rootScope.messages.push({
                                 	'text' : 'Object added with success',
                                 	'type' : 'alert-success',

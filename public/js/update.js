@@ -96,7 +96,7 @@ module.controller('UpdateObjectCtrl', function($scope, $rootScope, $http, $docum
                                 }).then(function(resp) {
 					return true;
                                 }, function(resp) {
-´					return false;
+					return false;
                                 });
                                 $scope[type] = null;
 			};
